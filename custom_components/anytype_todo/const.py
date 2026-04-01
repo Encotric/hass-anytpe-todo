@@ -4,7 +4,7 @@ from logging import Logger, getLogger
 
 LOGGER: Logger = getLogger(__package__)
 
-DOMAIN = "anytype"
+DOMAIN = "anytype_todo"
 ATTRIBUTION = "Data provided by Anytype API"
 
 # Configuration constants

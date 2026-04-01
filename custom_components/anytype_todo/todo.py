@@ -12,7 +12,7 @@ from homeassistant.components.todo.const import TodoItemStatus, TodoListEntityFe
 from homeassistant.core import callback
 from homeassistant.exceptions import HomeAssistantError
 
-from .anytype import AnytypeMarkdownToDoPage, AnytypeMarkdownTodoItem
+from .anytype import AnytypeMarkdownTodoItem, AnytypeMarkdownToDoPage
 from .entity import AnytypeEntity
 
 if TYPE_CHECKING:
@@ -72,6 +72,7 @@ class AnytypeTodoListEntity(AnytypeEntity, TodoListEntity):
         """Initialize the todo list entity."""
         super().__init__(coordinator)
         self._attr_name = name
+        self._attr_has_entity_name = True
         self._attr_unique_id = (
             f"{coordinator.config_entry.entry_id}_{space_id}_{name}_list"
         )

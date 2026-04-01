@@ -1,13 +1,20 @@
 {
-    "name": "ludeeus/integration_blueprint",
-    "image": "mcr.microsoft.com/devcontainers/python:3.13",
-    "postCreateCommand": "scripts/setup",
+    "name": "hass-anytype",
+    "dockerComposeFile": "docker-compose.yml",
+    "service": "main",
+    "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+    "postCreateCommand": "sudo apt-get update && sudo DEBIAN_FRONTEND=noninteractive apt-get install -y ffmpeg libturbojpeg0 libpcap-dev && scripts/setup",
     "forwardPorts": [
-        8123
+        8123,
+        31012
     ],
     "portsAttributes": {
         "8123": {
             "label": "Home Assistant",
+            "onAutoForward": "notify"
+        },
+        "31012": {
+            "label": "AnyType CLI",
             "onAutoForward": "notify"
         }
     },
@@ -36,10 +43,5 @@
             }
         }
     },
-    "remoteUser": "vscode",
-    "features": {
-        "ghcr.io/devcontainers-extra/features/apt-packages:1": {
-            "packages": "ffmpeg,libturbojpeg0,libpcap-dev"
-        }
-    }
+    "remoteUser": "vscode"
 }

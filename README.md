@@ -1,46 +1,134 @@
-# Notice
+# Anytype Todo for Home Assistant
 
-The component and platforms in this repository are not meant to be used by a
-user, but as a "blueprint" that custom component developers can build
-upon, to make more awesome stuff.
+[![hacs_badge](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://github.com/hacs/integration)
 
-HAVE FUN! 😎
+`anytype-todo` is a Home Assistant custom integration that syncs checklist items from one Anytype object into Home Assistant Todo entities.
 
-## Why?
+## What This Integration Does
 
-This is simple, by having custom_components look (README + structure) the same
-it is easier for developers to help each other and for users to start using them.
+- Connects to the local Anytype API or Anytype CLI (default host: `http://localhost:31009`)
+- Reads one Anytype object (configured via object URL)
+- Parses markdown checklist sections in that object
+- Exposes each checklist section as a Home Assistant Todo list entity
+- Syncs create, update, and delete operations from Home Assistant back to Anytype
+- Polls Anytype regularly to reflect changes made outside Home Assistant
 
-If you are a developer and you want to add things to this "blueprint" that you think more
-developers will have use for, please open a PR to add it :)
+This integration currently provides the `todo` platform only.
 
-## What?
+## Requirements
 
-This repository contains multiple files, here is a overview:
+- Home Assistant `2023.1.0` or newer (HACS metadata minimum)
+- Anytype desktop app with API access
+- A valid Anytype API key
+- A target Anytype object URL that includes `spaceId`
 
-File | Purpose | Documentation
--- | -- | --
-`.devcontainer.json` | Used for development/testing with Visual Studio Code. | [Documentation](https://code.visualstudio.com/docs/remote/containers)
-`.github/ISSUE_TEMPLATE/*.yml` | Templates for the issue tracker | [Documentation](https://help.github.com/en/github/building-a-strong-community/configuring-issue-templates-for-your-repository)
-`custom_components/integration_blueprint/*` | Integration files, this is where everything happens. | [Documentation](https://developers.home-assistant.io/docs/creating_component_index)
-`CONTRIBUTING.md` | Guidelines on how to contribute. | [Documentation](https://help.github.com/en/github/building-a-strong-community/setting-guidelines-for-repository-contributors)
-`LICENSE` | The license file for the project. | [Documentation](https://help.github.com/en/github/creating-cloning-and-archiving-repositories/licensing-a-repository)
-`README.md` | The file you are reading now, should contain info about the integration, installation and configuration instructions. | [Documentation](https://help.github.com/en/github/writing-on-github/basic-writing-and-formatting-syntax)
-`requirements.txt` | Python packages used for development/lint/testing this integration. | [Documentation](https://pip.pypa.io/en/stable/user_guide/#requirements-files)
+## Install
 
-## How?
+### Option 1: HACS (Recommended)
 
-1. Create a new repository in GitHub, using this repository as a template by clicking the "Use this template" button in the GitHub UI.
-1. Open your new repository in Visual Studio Code devcontainer (Preferably with the "`Dev Containers: Clone Repository in Named Container Volume...`" option).
-1. Rename all instances of the `integration_blueprint` to `custom_components/<your_integration_domain>` (e.g. `custom_components/awesome_integration`).
-1. Rename all instances of the `Integration Blueprint` to `<Your Integration Name>` (e.g. `Awesome Integration`).
-1. Run the `scripts/develop` to start HA and test out your new integration.
+1. Open HACS.
+2. Go to Integrations.
+3. Open the menu in the top right and choose Custom repositories.
+4. Add `https://github.com/Encotric/hass-anytype` as category `Integration`.
+5. Install `Anytype ToDo Lists`.
+6. Restart Home Assistant.
 
-## Next steps
+### Option 2: Manual
 
-These are some next steps you may want to look into:
-- Add tests to your integration, [`pytest-homeassistant-custom-component`](https://github.com/MatthewFlamm/pytest-homeassistant-custom-component) can help you get started.
-- Add brand images (logo/icon) to https://github.com/home-assistant/brands.
-- Create your first release.
-- Share your integration on the [Home Assistant Forum](https://community.home-assistant.io/).
-- Submit your integration to [HACS](https://hacs.xyz/docs/publish/start).
+1. Copy the folder `custom_components/integration_blueprint` from this repository to your Home Assistant `custom_components` directory.
+2. Keep the folder name as `integration_blueprint`.
+3. Restart Home Assistant.
+
+## Configure In Home Assistant
+
+1. Go to Settings -> Devices & Services -> Add Integration.
+2. Search for `Anytype`.
+3. Enter:
+   - `API Key`
+   - `Host URL` (optional, defaults to `http://localhost:31009`)
+   - `Object URL` (required)
+4. Submit.
+
+If validation succeeds, the integration creates Todo entities based on the selected object's markdown content.
+
+## Object URL Format
+
+The object URL must contain both:
+
+- object id in the path
+- `spaceId` query parameter
+
+Example shape:
+
+```text
+https://your.anytype/object_id_here?spaceId=space_id_here
+```
+
+## How Markdown Is Mapped To Todo Lists
+
+Inside the configured Anytype object, checklist content is interpreted as follows:
+
+- A heading starts a Todo list section.
+- Checklist items under that section (`- [ ] task`, `- [x] done`) become Todo items.
+- Each heading becomes a separate Home Assistant Todo entity.
+
+If no valid heading + checklist structure exists, no usable Todo list entities are created.
+
+## Using The Todo Entities
+
+After setup, use standard Home Assistant Todo services:
+
+- `todo.add_item`
+- `todo.update_item`
+- `todo.remove_item`
+
+See [SERVICES.md](SERVICES.md) for YAML examples.
+
+## Troubleshooting
+
+### Integration Cannot Connect
+
+- Ensure Anytype desktop app is running.
+- Verify the API host is reachable (default `http://localhost:31009`).
+- Recreate API key and retry setup.
+
+### Setup Fails With Object URL Error
+
+- Confirm URL includes `spaceId`.
+- Confirm the object id in the path is valid for the same space.
+
+### No Todo Entities Appear
+
+- Ensure the object contains markdown headings followed by checklist items.
+- Check Home Assistant logs for `custom_components.integration_blueprint` errors.
+
+## Development
+
+Local helper scripts in this repository:
+
+- `./scripts/setup`: install Python dependencies
+- `./scripts/develop`: run Home Assistant in debug with local `config/`
+- `./scripts/lint`: run formatting and lint autofixes (`ruff format` + `ruff check --fix`)
+
+Typical flow:
+
+```bash
+./scripts/setup
+./scripts/develop
+```
+
+In another terminal:
+
+```bash
+./scripts/lint
+```
+
+## Project Links
+
+- Repository: https://github.com/Encotric/hass-anytype
+- Issues: https://github.com/Encotric/hass-anytype/issues
+- Anytype API docs: https://developers.anytype.io/docs/reference
+
+## License
+
+MIT. See [LICENSE](LICENSE).

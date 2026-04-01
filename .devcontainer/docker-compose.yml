@@ -1,0 +1,17 @@
+services:
+  main:
+    image: "mcr.microsoft.com/devcontainers/python:3.14"
+    stdin_open: true
+    tty: true
+    volumes:
+      - ../..:/workspaces:cached
+    ports:
+      - 8123:8123
+  anytype:
+    image: ghcr.io/anyproto/anytype-cli:v0.1.11
+    ports:
+      - 31012:31012
+    command: "serve --listen-address 0.0.0.0:31012"
+    volumes:
+      - "./anytype-cli/.anytype:/root/.anytype"
+      - "./anytype-cli/.config:/root/.config"

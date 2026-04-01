@@ -1,0 +1,22 @@
+{
+    "config": {
+        "step": {
+            "user": {
+                "description": "Konfiguriere deine Anytype-API-Verbindung. Du kannst im Anytype-Desktop-Client einen API-Schlüssel erzeugen (Einstellungen > API Keys) oder den programmatischen Authentifizierungsablauf verwenden. Der Standard-Host für lokale Anytype-Instanzen ist http://localhost:31009.",
+                "data": {
+                    "api_key": "API-Schlüssel",
+                    "host": "Host-URL",
+                    "object_url": "Objekt-URL"
+                }
+            }
+        },
+        "error": {
+            "auth": "Ungültiger API-Schlüssel. Bitte prüfe deine Zugangsdaten.",
+            "connection": "Verbindung zu Anytype nicht möglich. Stelle sicher, dass die Anytype-App läuft und erreichbar ist.",
+            "unknown": "Unbekannter Fehler aufgetreten."
+        },
+        "abort": {
+            "already_configured": "Diese Anytype-Instanz ist bereits konfiguriert."
+        }
+    }
+}

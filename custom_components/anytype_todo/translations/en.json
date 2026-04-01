@@ -1,0 +1,21 @@
+{
+    "config": {
+        "step": {
+            "user": {
+                "description": "Configure your Anytype API connection. You can generate an API key in the Anytype desktop app (Settings > API Keys) or use the programmatic authentication flow. Default host is http://localhost:31009 for local Anytype instances.",
+                "data": {
+                    "api_key": "API Key",
+                    "host": "Host URL"
+                }
+            }
+        },
+        "error": {
+            "auth": "Invalid API key. Please check your credentials.",
+            "connection": "Unable to connect to Anytype. Make sure the Anytype app is running and accessible.",
+            "unknown": "Unknown error occurred."
+        },
+        "abort": {
+            "already_configured": "This Anytype instance is already configured."
+        }
+    }
+}

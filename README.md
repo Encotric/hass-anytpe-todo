@@ -29,7 +29,7 @@ This integration currently provides the `todo` platform only.
 1. Open HACS.
 2. Go to Integrations.
 3. Open the menu in the top right and choose Custom repositories.
-4. Add `https://github.com/Encotric/hass-anytype` as category `Integration`.
+4. Add `https://github.com/Encotric/hass-anytype-todo` as category `Integration`.
 5. Install `Anytype ToDo Lists`.
 6. Restart Home Assistant.
 
@@ -82,8 +82,6 @@ After setup, use standard Home Assistant Todo services:
 - `todo.update_item`
 - `todo.remove_item`
 
-See [SERVICES.md](SERVICES.md) for YAML examples.
-
 ## Troubleshooting
 
 ### Integration Cannot Connect
@@ -122,13 +120,3 @@ In another terminal:
 ```bash
 ./scripts/lint
 ```
-
-## Project Links
-
-- Repository: https://github.com/Encotric/hass-anytype
-- Issues: https://github.com/Encotric/hass-anytype/issues
-- Anytype API docs: https://developers.anytype.io/docs/reference
-
-## License
-
-MIT. See [LICENSE](LICENSE).

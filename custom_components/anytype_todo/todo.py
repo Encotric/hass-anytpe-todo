@@ -1,4 +1,4 @@
-"""Todo platform for Anytype."""
+"""Todo platform for Anytype ToDo."""
 
 from __future__ import annotations
 
@@ -12,21 +12,14 @@ from homeassistant.components.todo.const import TodoItemStatus, TodoListEntityFe
 from homeassistant.core import callback
 from homeassistant.exceptions import HomeAssistantError
 
-from custom_components.integration_blueprint.anytype import (
-    AnytypeMarkdownToDoPage,
-    AnytypeMarkdownTodoItem,
-)
-
+from .anytype import AnytypeMarkdownToDoPage, AnytypeMarkdownTodoItem
 from .entity import AnytypeEntity
 
 if TYPE_CHECKING:
     from homeassistant.core import HomeAssistant
     from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
-    from custom_components.integration_blueprint.coordinator import (
-        AnytypeDataUpdateCoordinator,
-    )
-
+    from .coordinator import AnytypeDataUpdateCoordinator
     from .data import AnytypeConfigEntry
 
 
@@ -35,7 +28,7 @@ async def async_setup_entry(
     entry: AnytypeConfigEntry,
     async_add_entities: AddEntitiesCallback,
 ) -> None:
-    """Set up Anytype todo platform."""
+    """Set up the Anytype ToDo platform."""
     client = entry.runtime_data.client
 
     at_object = await client.async_get_object(
@@ -58,7 +51,7 @@ async def async_setup_entry(
 
 
 class AnytypeTodoListEntity(AnytypeEntity, TodoListEntity):
-    """Anytype todo list entity."""
+    """Todo list entity backed by an Anytype object section."""
 
     _attr_supported_features = (
         TodoListEntityFeature.CREATE_TODO_ITEM
@@ -113,7 +106,7 @@ class AnytypeTodoListEntity(AnytypeEntity, TodoListEntity):
         return self._todos
 
     async def async_create_todo_item(self, item: TodoItem) -> None:
-        """Create a new todo item."""
+        """Create a new todo item and persist it to Anytype."""
         if item.summary is None:
             return
 
@@ -142,7 +135,7 @@ class AnytypeTodoListEntity(AnytypeEntity, TodoListEntity):
         self.async_update_listeners()
 
     async def async_update_todo_item(self, item: TodoItem) -> None:
-        """Update a todo item."""
+        """Update an existing todo item and persist it to Anytype."""
         if not item.uid:
             raise HomeAssistantError("Todo item must have a UID to be updated")
 
@@ -183,7 +176,7 @@ class AnytypeTodoListEntity(AnytypeEntity, TodoListEntity):
         self.async_update_listeners()
 
     async def async_delete_todo_items(self, uids: list[str]) -> None:
-        """Delete todo items."""
+        """Delete todo items and persist the updated markdown."""
         try:
             todo_list = self.markdown_page.get_list(cast("str", self._attr_name))
             if todo_list is None:

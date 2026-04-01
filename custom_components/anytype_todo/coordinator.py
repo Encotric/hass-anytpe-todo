@@ -1,4 +1,4 @@
-"""DataUpdateCoordinator for anytype."""
+"""DataUpdateCoordinator for Anytype ToDo."""
 
 from __future__ import annotations
 
@@ -7,12 +7,11 @@ from typing import TYPE_CHECKING, Any
 from homeassistant.exceptions import ConfigEntryAuthFailed
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
-from custom_components.anytype_todo.anytype import AnytypeMarkdownToDoPage
-
 from .api import (
     AnytypeApiClientAuthenticationError,
     AnytypeApiClientError,
 )
+from .anytype import AnytypeMarkdownToDoPage
 
 if TYPE_CHECKING:
     from .data import AnytypeConfigEntry
@@ -20,12 +19,12 @@ if TYPE_CHECKING:
 
 # https://developers.home-assistant.io/docs/integration_fetching_data#coordinated-single-api-poll-for-data-for-all-entities
 class AnytypeDataUpdateCoordinator(DataUpdateCoordinator):
-    """Class to manage fetching data from the API."""
+    """Manage fetching Anytype ToDo data from the API."""
 
     config_entry: AnytypeConfigEntry
 
     async def _async_update_data(self) -> Any:
-        """Update data via library."""
+        """Fetch the latest markdown page and convert it to Todo lists."""
         try:
             at_object = await self.config_entry.runtime_data.client.async_get_object(
                 space_id=self.config_entry.runtime_data.space_id,

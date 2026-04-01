@@ -1,5 +1,5 @@
 """
-Custom integration to integrate Anytype with Home Assistant ToDo lists.
+Custom integration to integrate Anytype with Home Assistant Todo lists.
 
 For more details about this integration, please refer to
 https://github.com/Encotric/hass-anytype-todo
@@ -41,7 +41,7 @@ async def async_setup_entry(
     hass: HomeAssistant,
     entry: AnytypeConfigEntry,
 ) -> bool:
-    """Set up this integration using UI."""
+    """Set up Anytype ToDo using the UI."""
     coordinator = AnytypeDataUpdateCoordinator(
         hass=hass,
         logger=LOGGER,
@@ -74,7 +74,7 @@ async def async_unload_entry(
     hass: HomeAssistant,
     entry: AnytypeConfigEntry,
 ) -> bool:
-    """Handle removal of an entry."""
+    """Handle removal of an Anytype ToDo entry."""
     return await hass.config_entries.async_unload_platforms(entry, PLATFORMS)
 
 
@@ -82,5 +82,5 @@ async def async_reload_entry(
     hass: HomeAssistant,
     entry: AnytypeConfigEntry,
 ) -> None:
-    """Reload config entry."""
+    """Reload an Anytype ToDo config entry."""
     await hass.config_entries.async_reload(entry.entry_id)

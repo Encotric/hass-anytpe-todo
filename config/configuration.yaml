@@ -9,4 +9,4 @@ homeassistant:
 logger:
   default: info
   logs:
-    custom_components.anytype: debug
+    custom_components.anytype_todo: debug

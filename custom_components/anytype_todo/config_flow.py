@@ -1,4 +1,4 @@
-"""Adds config flow for Anytype."""
+"""Adds the config flow for Anytype ToDo."""
 
 from __future__ import annotations
 
@@ -25,7 +25,7 @@ from .const import (
 
 
 class AnytypeFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
-    """Config flow for Anytype."""
+    """Config flow for Anytype ToDo."""
 
     VERSION = 1
 
@@ -33,7 +33,7 @@ class AnytypeFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
         self,
         user_input: dict | None = None,
     ) -> config_entries.ConfigFlowResult:
-        """Handle a flow initialized by the user."""
+        """Handle a user-initialized config flow."""
         _errors = {}
         if user_input is not None:
             try:
@@ -56,10 +56,7 @@ class AnytypeFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
                 unique_id = user_input[CONF_API_KEY][:16]
                 await self.async_set_unique_id(unique_id)
                 self._abort_if_unique_id_configured()
-                return self.async_create_entry(
-                    title="Anytype",
-                    data=user_input,
-                )
+                return self.async_create_entry(title="Anytype ToDo", data=user_input)
 
         return self.async_show_form(
             step_id="user",
@@ -95,7 +92,7 @@ class AnytypeFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
         )
 
     async def _test_credentials(self, api_key: str, host: str, object_url: str) -> None:
-        """Validate credentials."""
+        """Validate Anytype ToDo credentials."""
         client = AnytypeApiClient(
             api_key=api_key,
             host=host,

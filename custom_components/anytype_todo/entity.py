@@ -1,4 +1,4 @@
-"""AnytypeEntity class."""
+"""Base entity class for Anytype ToDo."""
 
 from __future__ import annotations
 
@@ -10,12 +10,12 @@ from .coordinator import AnytypeDataUpdateCoordinator
 
 
 class AnytypeEntity(CoordinatorEntity[AnytypeDataUpdateCoordinator]):
-    """AnytypeEntity class."""
+    """Base entity for Anytype ToDo entities."""
 
     _attr_attribution = ATTRIBUTION
 
     def __init__(self, coordinator: AnytypeDataUpdateCoordinator) -> None:
-        """Initialize."""
+        """Initialize the shared entity state."""
         super().__init__(coordinator)
         self._attr_unique_id = coordinator.config_entry.entry_id
         self._attr_device_info = DeviceInfo(
@@ -25,6 +25,6 @@ class AnytypeEntity(CoordinatorEntity[AnytypeDataUpdateCoordinator]):
                     coordinator.config_entry.entry_id,
                 ),
             },
-            name="Anytype-ToDo",
+            name="Anytype ToDo",
             manufacturer="Encotric / Anytype Association",
         )

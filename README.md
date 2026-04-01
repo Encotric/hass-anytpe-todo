@@ -35,8 +35,8 @@ This integration currently provides the `todo` platform only.
 
 ### Option 2: Manual
 
-1. Copy the folder `custom_components/integration_blueprint` from this repository to your Home Assistant `custom_components` directory.
-2. Keep the folder name as `integration_blueprint`.
+1. Copy the folder `custom_components/anytype_todo` from this repository to your Home Assistant `custom_components` directory.
+2. Keep the folder name as `anytype_todo`.
 3. Restart Home Assistant.
 
 ## Configure In Home Assistant
@@ -100,7 +100,7 @@ See [SERVICES.md](SERVICES.md) for YAML examples.
 ### No Todo Entities Appear
 
 - Ensure the object contains markdown headings followed by checklist items.
-- Check Home Assistant logs for `custom_components.integration_blueprint` errors.
+- Check Home Assistant logs for `custom_components.anytype_todo` errors.
 
 ## Development
 
